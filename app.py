@@ -1,5 +1,3 @@
-# TODO: CSS Styling (use an external style sheet)
-
 # Historic Stock Data Dashboard
 
 # Imports
@@ -22,7 +20,7 @@ app.layout = html.Div([
 
     # Sub-Div (2nd level)
     # Dashboard Title
-    html.Div([html.H1(children='Stock Ticker Dashboard',
+    html.Div([html.H1(children='Stock Price Dashboard',
                       className='twelve columns',
                       style={'text-align': 'center',
                              'margin': '2% 0% 3% 0%',
@@ -59,7 +57,8 @@ app.layout = html.Div([
                            'fontWeight': 'normal',
                            'height': '50px',
                            'width': '150px',
-                           'marginLeft': '15px'},
+                           'marginLeft': '25px',
+                           'marginTop': '1.5%'},
                     className='two columns button-primary')
 
     ], style={'margin': '6% 0% 6% 12.5%', 'float': 'center'}, className='row'),
@@ -100,31 +99,34 @@ def symbols_names_callback(value):
                State('date-picker-range', 'end_date')])
 def graph_callback(n_clicks, selected_symbols, start_date, end_date):
     if n_clicks > 0:
-        df_list = [web.DataReader(symbol, 'iex', start_date, end_date) for symbol in selected_symbols]
+        try:
+            df_list = [web.DataReader(symbol, 'iex', start_date, end_date) for symbol in selected_symbols]
 
-        # Naming the DataFrames
-        for i in range(0, len(df_list)):
-            df_list[i].name = selected_symbols[i]
+            # Naming the DataFrames
+            for i in range(0, len(df_list)):
+                df_list[i].name = selected_symbols[i]
 
-        # Formatting a graph title
-        symbols = ""
-        for symbol in selected_symbols:
-            symbols = symbols + "'" + symbol + "', "
-        symbols = symbols[:-2]
+            # Formatting a graph title
+            symbols = ""
+            for symbol in selected_symbols:
+                symbols = symbols + "'" + symbol + "', "
+            symbols = symbols[:-2]
 
-        # Making a list of all the available dates in the range selected
-        dates = [i for i in df_list[0].index]
+            # Making a list of all the available dates in the range selected
+            dates = [i for i in df_list[0].index]
 
-        data = [go.Scatter(x=dates, y=df['close'], mode='lines', name=df.name) for df in df_list]
-        layout = go.Layout(title='{} closing prices'.format(symbols),
-                           xaxis={'title': 'Date'},
-                           yaxis={'title': 'Closing Price'},
-                           font={'family': 'verdana', 'size': 15, 'color': '#606060'})
-        fig = dict(data=data, layout=layout)
-        return fig
+            data = [go.Scatter(x=dates, y=df['close'], mode='lines', name=df.name) for df in df_list]
+            layout = go.Layout(title='{} closing prices'.format(symbols),
+                               xaxis={'title': 'Date'},
+                               yaxis={'title': 'Closing Price'},
+                               font={'family': 'verdana', 'size': 15, 'color': '#606060'})
+            fig = dict(data=data, layout=layout)
+            return fig
+
+        except Exception as e:
+            print(e)
 
 
 # Running the server
 if __name__ == '__main__':
     app.run_server(debug=True)
-
