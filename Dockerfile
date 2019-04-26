@@ -7,8 +7,8 @@ RUN cd /usr/local/bin \
     && ln -s /usr/bin/python3 python \
     && pip3 install --upgrade pip
 
-RUN  mkdir /Stock_Data_Dashboard
-WORKDIR /Stock_Data_Dashboard
+RUN  mkdir /Stock_Price_Dashboard
+WORKDIR /Stock_Price_Dashboard
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
