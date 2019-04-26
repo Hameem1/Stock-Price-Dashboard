@@ -5,6 +5,10 @@ The user can select one or more stock symbols to view at once.
 The dropdown shows all stock symbols supported for trading by the Investor’s Exchange.
 Functionality such as zooming, hovering, toggling and dynamic updating is supported for all plots.
 
+## Demo
+
+![](https://i.imgur.com/eGwD3AF.gif)
+
 ## Installation
 
 #### Using a virtual environment
@@ -47,7 +51,3 @@ Functionality such as zooming, hovering, toggling and dynamic updating is suppor
     
     `docker system prune --volumes`
     
-
-## Demo
-
-![](https://i.imgur.com/eGwD3AF.gif)
